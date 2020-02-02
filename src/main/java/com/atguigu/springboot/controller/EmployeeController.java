@@ -18,4 +18,19 @@ public class EmployeeController {
         return employeeService.getEmp(id);
     }
 
+    @GetMapping("/emp/update")
+    @ResponseBody
+    public Employee updateEmp(Employee employee){
+        Employee emp = employeeService.updateEmp(employee);
+        System.out.println(emp);
+        return emp;
+    }
+
+    @GetMapping("/emp/del")
+    @ResponseBody
+    public String deleteEmp(Employee employee){
+        System.out.println("删除id为："+employee.getId()+"的数据");
+        return employeeService.deleteEmp(employee.getId());
+    }
+
 }

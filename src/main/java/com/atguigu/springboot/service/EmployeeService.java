@@ -3,7 +3,7 @@ package com.atguigu.springboot.service;
 import com.atguigu.springboot.bean.Employee;
 import com.atguigu.springboot.mapper.EmployeeMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.*;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,15 +20,63 @@ public class EmployeeService {
             6、sync【是否使用异步模式,默认是【false】方法执行完，以同步的方式将方法返回的结果存在缓存中】
         @Cacheable原理
         1、自动配置类：CacheAutoConfiguration
-        2、
+
 
 
      */
     @Autowired
     EmployeeMapper employeeMapper;
-    @Cacheable(cacheNames = {"emp"},unless = "#result==null",keyGenerator = "mykeygenerator")
+
+    @Cacheable(value = {"emp"}/*,unless = "#result==null",keyGenerator = "mykeygenerator"*/)
     public Employee getEmp(Integer id){
         System.out.println("查询"+id+"号员工信息");
         return employeeMapper.getEmpById(id);
     }
+
+    /*
+    @CachePut，既调用方法，且也更新缓存
+            修改了数据库中信息，同时也修改了缓存
+     */
+    @CachePut(value = "emp",key = "#employee.id")
+    public Employee updateEmp(Employee employee){
+        employeeMapper.UpdateEmp(employee);
+        return employee;
+    }
+
+    /*
+    @CacheEvict
+        key:指定要删除的数据
+        allEntries:是否删除value下的所有的缓存
+        beforeInvocation=false;缓存的清除是否在方法之前执行
+        默认是在方法之后清除
+     */
+    @CacheEvict(value = "emp",key = "#id",allEntries = true)
+    public String deleteEmp(Integer id){
+        employeeMapper.deleteEmp(id);
+        return "success";
+    }
+
+    /*
+    @Caching
+        可以一次指定多个缓存注解
+            eg:
+            @Caching(
+            cacheable = {
+                    @Cacheable(value = "emp",key = "#lastName")
+                        },
+            put = {
+                    @CachePut(value = "emp",key = "#result.id",
+                    @CachePut(value="emp",key = "#result.email"))
+                    }
+                    )
+     @Cach
+     */
+
+    /*
+    @CacheConfig
+    可以指定公共注解配置：cacheNames，keyGenerator，cacheManager，cacheResolver
+     */
+
+
+
 }

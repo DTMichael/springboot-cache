@@ -18,6 +18,6 @@ public interface EmployeeMapper {
     @Insert("INSERT INTO employee VALUES(#{lastName}, #{email}, #{gender}, #{dId}")
     public void insertEmp(Employee employee);
 
-    @Delete("DELETE FROM employee WHERE id=#{id}")
-    public void deleteById(Integer id);
+//    @Delete("DELETE FROM employee WHERE id=#{id}")
+//    public void deleteById(Integer id);
 }
