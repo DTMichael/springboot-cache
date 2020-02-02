@@ -23,6 +23,7 @@ import org.springframework.cache.annotation.EnableCaching;
     2、引入redis的starter
     3、配置redis
     4、使用Redis自动配置类提供的两个实现类RedisTemplate和StringRedisTemplate，默认使用jdkSerializable如果需要自定义序列化器，则需要重新写一个配置。
+    5、配置RedisCacheManager，实现Redis缓存的序列化器为json。【MyRedisConfig】
 
  */
 @MapperScan("com.atguigu .springboot.mapper")
